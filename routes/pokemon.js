@@ -13,8 +13,15 @@ router.get('/:id', async (req, res, next) => {
 
     const response = await callGet(id);
     const { data } = response;
-    const { name, height, moves } = data;
+    const { name, height, moves, types, stats } = data;
     const filteredMoves = moves.map(m => m.move.name);
+    const filteredTypes = types.map(t => t.type.name);
+    const filteredStats = stats.map(s => {
+      return {
+        stat: s.base_stat,
+        name: s.stat.name
+      }
+    });
 
     res.send({
       success: true,
@@ -22,7 +29,9 @@ router.get('/:id', async (req, res, next) => {
         id: req.params.id,
         name,
         height,
-        moves: filteredMoves
+        moves: filteredMoves,
+        types: filteredTypes,
+        stats: filteredStats
       },
       error: null
     });
@@ -48,7 +57,7 @@ router.get('/:id/picture', async (req, res, next) => {
     const response = await callGet(id);
     const { data } = response;
     const { sprites } = data;
-    const imageUrl = sprites.front_default;
+    const imageUrl = sprites.other['official-artwork'].front_default;
 
     const imageData = await getImage(imageUrl);
 
