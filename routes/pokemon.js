@@ -2,7 +2,6 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 const Joi = require('joi');
-const Stream = require('stream');
 
 router.get('/:id', async (req, res, next) => {
   const numberValidator = Joi.number();
